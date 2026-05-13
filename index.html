@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>情侣恋爱网站</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      window.LOVE_PASSWORD = "20260311";
+      window.loveStorageFallback = {
+        getItem(key) {
+          try {
+            return localStorage.getItem(key);
+          } catch {
+            return null;
+          }
+        },
+        setItem(key, value) {
+          try {
+            localStorage.setItem(key, value);
+          } catch {}
+        },
+        removeItem(key) {
+          try {
+            localStorage.removeItem(key);
+          } catch {}
+        },
+      };
+      window.loveLoginFallback = function (event) {
+        event.preventDefault();
+        const input = document.getElementById("passwordInput");
+        const error = document.getElementById("gateError");
+        const gate = document.getElementById("passwordGate");
+        const shell = document.getElementById("siteShell");
+        if (input && input.value.trim() === window.LOVE_PASSWORD) {
+          window.loveStorageFallback.setItem("love-site-auth", "yes");
+          if (error) error.textContent = "";
+          if (gate) gate.classList.add("is-hidden");
+          if (shell) shell.classList.remove("is-hidden");
+          if (typeof window.renderAll === "function") window.renderAll();
+          if (typeof window.updateTimer === "function") window.updateTimer();
+        } else if (error) {
+          error.textContent = "暗号不对，再试一次。";
+        }
+        return false;
+      };
+    </script>
+  </head>
+  <body>
+    <div class="password-gate" id="passwordGate">
+      <div class="gate-art" aria-hidden="true"></div>
+      <form class="gate-panel" id="gateForm" autocomplete="off" onsubmit="return window.loveLoginFallback(event)">
+        <p class="kicker">Private Love Space</p>
+        <h1>张逸凡 & 戴怡萱</h1>
+        <label for="passwordInput">输入暗号</label>
+        <div class="gate-input-row">
+          <input id="passwordInput" type="password" autocomplete="off" />
+          <button type="submit" title="进入">进入</button>
+        </div>
+        <p class="gate-error" id="gateError" role="alert"></p>
+      </form>
+    </div>
+
+    <div class="site-shell is-hidden" id="siteShell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="返回首页">
+          <span class="brand-mark" aria-hidden="true">L</span>
+          <span>
+            <strong>张逸凡 & 戴怡萱</strong>
+            <small>Our Story</small>
+          </span>
+        </a>
+        <nav class="main-nav" aria-label="主要导航">
+          <a href="#home">首页</a>
+          <a href="#music">音乐</a>
+          <a href="#timeline">回忆</a>
+          <a href="#gallery">相册</a>
+          <a href="#messages">留言</a>
+          <a href="#wishes">愿望</a>
+          <a href="#mood">心情</a>
+        </nav>
+        <button class="icon-button" id="lockButton" title="锁定网站" aria-label="锁定网站">⌁</button>
+      </header>
+
+      <main>
+        <section class="hero-section" id="home">
+          <picture>
+            <source media="(max-width: 700px)" srcset="./assets/hero-chat-mobile.jpg" />
+            <img class="hero-image" src="./assets/hero-chat-background.jpg" alt="聊天记录截图背景" />
+          </picture>
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <p class="kicker">从那天开始，每一首歌都有了名字</p>
+            <h1>我们已经相爱 <span id="loveDays">0</span> 天</h1>
+            <p class="declaration">我会一直陪你，和生活温柔对抗到底。</p>
+            <div class="hero-actions">
+              <button class="primary-action" id="heroPlayButton">播放《真的吗》</button>
+              <a class="ghost-action" href="#timeline">看回忆</a>
+            </div>
+          </div>
+          <div class="hero-stats" aria-label="恋爱统计">
+            <div>
+              <span id="loveHours">00</span>
+              <small>小时</small>
+            </div>
+            <div>
+              <span id="loveMinutes">00</span>
+              <small>分钟</small>
+            </div>
+            <div>
+              <span id="loveSeconds">00</span>
+              <small>秒</small>
+            </div>
+            <div>
+              <span id="nextAnniversaryDays">0</span>
+              <small id="nextAnniversaryName">下个纪念日</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-grid overview-band" aria-label="核心概览">
+          <article class="metric-card">
+            <span>恋爱开始</span>
+            <strong id="startDateLabel">2026.03.11</strong>
+            <p>这一天，被我们认真放进了日历。</p>
+          </article>
+          <article class="metric-card">
+            <span>今日播放</span>
+            <strong id="todayTrackLabel">真的吗</strong>
+            <p id="todayTrackQuote">想你的时候，旋律会先替我开口。</p>
+          </article>
+          <article class="metric-card">
+            <span>最近纪念日</span>
+            <strong id="upcomingLabel">周年纪念日</strong>
+            <p id="upcomingDetail">把重要日子提前放在心上。</p>
+          </article>
+        </section>
+
+        <section class="content-section music-section" id="music">
+          <div class="section-heading">
+            <p class="kicker">Music Player</p>
+            <h2>我们的歌</h2>
+          </div>
+          <div class="music-layout">
+            <div class="player-panel">
+              <img class="player-cover" id="playerCover" src="./assets/cover-zhen-de-ma-photo.jpg" alt="当前歌曲封面" />
+              <div class="player-main">
+                <p class="track-tag" id="trackTag">主题曲</p>
+                <h3 id="trackTitle">真的吗</h3>
+                <p id="trackArtist">莫文蔚</p>
+                <div class="player-controls">
+                  <button class="icon-button" id="prevButton" title="上一首" aria-label="上一首">‹</button>
+                  <button class="play-button" id="playButton" title="播放或暂停" aria-label="播放或暂停">▶</button>
+                  <button class="icon-button" id="nextButton" title="下一首" aria-label="下一首">›</button>
+                  <button class="icon-button" id="modeButton" title="切换播放模式" aria-label="切换播放模式">↻</button>
+                </div>
+                <div class="range-row">
+                  <span id="currentTime">0:00</span>
+                  <input id="progressRange" type="range" min="0" max="100" value="0" aria-label="播放进度" />
+                  <span id="durationTime">0:00</span>
+                </div>
+                <div class="volume-row">
+                  <span>音量</span>
+                  <input id="volumeRange" type="range" min="0" max="1" step="0.01" value="0.72" aria-label="音量" />
+                </div>
+              </div>
+            </div>
+            <div class="lyrics-panel">
+              <p class="kicker">Lyric Line</p>
+              <div id="lyricList" class="lyric-list" aria-live="polite"></div>
+              <p class="linked-memory" id="linkedMemory">关联回忆：第一次一起听完一首歌</p>
+            </div>
+          </div>
+          <div class="track-list" id="trackList" aria-label="情侣专属歌单"></div>
+        </section>
+
+        <section class="content-section" id="timeline">
+          <div class="section-heading">
+            <p class="kicker">Timeline</p>
+            <h2>回忆时间线</h2>
+          </div>
+          <div class="timeline" id="timelineList"></div>
+        </section>
+
+        <section class="content-section gallery-section" id="gallery">
+          <div class="section-heading with-actions">
+            <div>
+              <p class="kicker">Album</p>
+              <h2>情侣相册</h2>
+            </div>
+            <div class="segmented" id="galleryFilters" aria-label="相册分类"></div>
+          </div>
+          <div class="gallery-grid" id="galleryGrid"></div>
+        </section>
+
+        <section class="content-section split-section" id="messages">
+          <div>
+            <div class="section-heading">
+              <p class="kicker">Message Board</p>
+              <h2>情话留言板</h2>
+            </div>
+            <form class="message-form" id="messageForm">
+              <div class="two-fields">
+                <label>
+                  署名
+                  <select id="messageAuthor">
+                    <option value="张逸凡">张逸凡</option>
+                    <option value="戴怡萱">戴怡萱</option>
+                  </select>
+                </label>
+                <label>
+                  附带歌曲
+                  <select id="messageTrack"></select>
+                </label>
+              </div>
+              <label>
+                留言
+                <textarea id="messageText" rows="4" placeholder="今天也想把好听的歌分享给你"></textarea>
+              </label>
+              <button class="primary-action" type="submit">留下这一句</button>
+            </form>
+          </div>
+          <div class="message-list" id="messageList"></div>
+        </section>
+
+        <section class="content-section split-section" id="wishes">
+          <div>
+            <div class="section-heading">
+              <p class="kicker">Wish List</p>
+              <h2>愿望清单</h2>
+            </div>
+            <form class="wish-form" id="wishForm">
+              <label>
+                新愿望
+                <input id="wishInput" type="text" placeholder="一起去海边看日落" />
+              </label>
+              <button class="primary-action" type="submit">加入清单</button>
+            </form>
+          </div>
+          <div class="wish-list" id="wishList"></div>
+        </section>
+
+        <section class="content-section date-section" id="dates">
+          <div class="section-heading">
+            <p class="kicker">Plans</p>
+            <h2>约会与纪念日</h2>
+          </div>
+          <div class="date-grid" id="dateGrid"></div>
+        </section>
+
+        <section class="content-section split-section" id="mood">
+          <div>
+            <div class="section-heading">
+              <p class="kicker">Mood</p>
+              <h2>每日心情</h2>
+            </div>
+            <form class="mood-form" id="moodForm">
+              <div class="mood-options" id="moodOptions"></div>
+              <label>
+                今日小记
+                <textarea id="moodText" rows="4" placeholder="今天的某个瞬间，很想唱给你听"></textarea>
+              </label>
+              <button class="primary-action" type="submit">保存心情</button>
+            </form>
+          </div>
+          <div class="mood-log" id="moodLog"></div>
+        </section>
+
+        <section class="about-band" id="about">
+          <p class="kicker">About Us</p>
+          <h2>把生活写成一张专辑</h2>
+          <p>照片是封面，留言是歌词，纪念日是副歌。等你换上真实照片和真实歌曲，它就会变成只属于你们的恋爱网站。</p>
+        </section>
+      </main>
+
+      <aside class="mini-player" id="miniPlayer" aria-label="迷你音乐播放器">
+        <img id="miniCover" src="./assets/cover-zhen-de-ma-photo.jpg" alt="" />
+        <div>
+          <strong id="miniTitle">真的吗</strong>
+          <span id="miniLyric">想你的时候，旋律会先替我开口。</span>
+        </div>
+        <button class="icon-button" id="miniPlayButton" title="播放或暂停" aria-label="播放或暂停">▶</button>
+      </aside>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <dialog class="photo-dialog" id="photoDialog">
+      <button class="dialog-close" id="dialogClose" aria-label="关闭">×</button>
+      <img id="dialogImage" src="./assets/gallery-cafe.png" alt="" />
+      <div>
+        <p class="kicker" id="dialogDate">2026.03.11</p>
+        <h3 id="dialogTitle">在一起的那天</h3>
+        <p id="dialogCaption">那天的空气也像副歌。</p>
+      </div>
+    </dialog>
+
+    <audio id="audioPlayer" preload="metadata"></audio>
+    <script src="./app.js?v=20260513-yongbeiji" defer></script>
+  </body>
+</html>
